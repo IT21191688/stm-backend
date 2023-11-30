@@ -16,6 +16,17 @@ const user_model_1 = __importDefault(require("../user/user.model"));
 const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
     return yield user_model_1.default.findOne({ email: email });
 });
+const save = (user, session) => __awaiter(void 0, void 0, void 0, function* () {
+    if (session) {
+        return yield user.save({ session });
+    }
+    else {
+        return yield user.save();
+    }
+});
+const findById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield user_model_1.default.findById(id).populate("organization");
+});
 exports.default = {
-    findByEmail
+    findByEmail, save, findById
 };

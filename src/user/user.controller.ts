@@ -6,8 +6,8 @@ import userUtill from "./user.utill";
 import { startSession } from "mongoose";
 import CustomResponse from "../util/response";
 
-const User=require('../user/user.model');
-const userService=require('../user/user.service');
+import User from "../user/user.model";
+import userService from "../user/user.service";
 
 // Import custom errors
 import NotFoundError from "../error/error.classes/NotFoundError";
@@ -23,10 +23,14 @@ const RegisterUser = async (req: Request, res: Response) => {
 
   const existingUser = await userService.findByEmail(user.email);
 
+  //console.log(user.email)
+
 
   if (existingUser) {
     throw new BadRequestError("User already exists!");
   }
+
+  //console.log(body.user)
 
 
   //construct auth object
@@ -46,6 +50,8 @@ const RegisterUser = async (req: Request, res: Response) => {
 
     //save user
     createdUser = await userService.save(user, session);
+
+    //console.log(createdUser)
 
     //save auth
     await userService.save(auth, session);
@@ -74,6 +80,5 @@ const RegisterUser = async (req: Request, res: Response) => {
 
 
 export{
-
     RegisterUser
 }
