@@ -10,6 +10,15 @@ const constants = {
       USER: "user",
     },
   },
+
+  WELLKNOWNSTATUS: {
+    ACTIVE: 1,
+    INACTIVE: 0
+  },
+
+  CLOUDINARY: {
+    FILE_NAME: "Dev_Link",
+  },
 };
 
 export default constants;

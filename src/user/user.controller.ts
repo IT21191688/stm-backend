@@ -31,8 +31,6 @@ const RegisterUser = async (req: Request, res: Response) => {
   }
 
   //console.log(body.user)
-
-
   //construct auth object
   const auth = new Auth();
   auth._id = user.email;
