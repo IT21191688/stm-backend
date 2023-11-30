@@ -1,3 +1,4 @@
+"use strict";
 /*import schedule from "node-schedule";
 import appointmentService from "../appointment/appointment.service";
 import emailTemplates from "./email-templates/email.templates";
@@ -46,4 +47,4 @@ const sendAppointmentReminders = () => {
 
 export { sendAppointmentReminders };
 
-*/
+*/ 
