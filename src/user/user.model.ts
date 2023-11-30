@@ -3,10 +3,15 @@ import constants from "../constant";
 
 const UserSchema = new mongoose.Schema(
   {
-    fullName: {
+    firstname: {
       type: String,
       required: [true, "Full name is required"],
       maxlength: [100, "Full name cannot be more than 50 characters"],
+    },
+    lastname: {
+      type: String,
+      required: [true, "last name is required"],
+      maxlength: [100, "last name cannot be more than 50 characters"],
     },
     email: {
       type: String,
@@ -20,14 +25,6 @@ const UserSchema = new mongoose.Schema(
           );
         },
         message: (props: any) => `${props.value} is not a valid email`,
-      },
-    },
-    vehicleType: {
-      type: String,
-      required: [true, "Vehicle Type is required"],
-      enum: {
-        values: [constants.VEHICLE.BIKE,constants.VEHICLE.BUS,constants.VEHICLE.CAR,constants.VEHICLE.LORRY,constants.VEHICLE.THREEWHEEl,constants.VEHICLE.TRUCK,constants.VEHICLE.VAN],
-        message: "Valid Vehicle required",
       },
     },
     password:{
