@@ -38,7 +38,7 @@ const StudentQRCodeEmail = (data: any) => {
             <h1>Student QR Code</h1>
             <p>Dear ${data.fullName},</p>
             <p>Here is your QR code for student ID:</p>
-            <img src="${data.qrCode}" alt="Student QR Code" />
+            <img src="data:image/png;base64, ${data.qrCode}" alt="Student QR Code" />
             <p>Please use this QR code for student identification.</p>
             <p>Best regards,<br> Your Organization Name</p>
         </div>

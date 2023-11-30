@@ -25,7 +25,7 @@ const save = (user, session) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 const findById = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield user_model_1.default.findById(id).populate("organization");
+    return yield user_model_1.default.findById(id);
 });
 exports.default = {
     findByEmail, save, findById

@@ -1,4 +1,5 @@
 "use strict";
+// student.controller.ts
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -12,13 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CreateStudent = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const response_1 = __importDefault(require("../util/response"));
 const student_service_1 = __importDefault(require("../student/student.service"));
 const user_service_1 = __importDefault(require("../user/user.service"));
 const NotFoundError_1 = __importDefault(require("../error/error.classes/NotFoundError"));
-const email_templates_1 = __importDefault(require("../util/email-templates/email.templates"));
 const emailServer_1 = require("../util/emailServer");
+const email_templates_1 = __importDefault(require("../util/email-templates/email.templates"));
 const CreateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { firstname, lastname, age, grade, email, role, classes, payment, } = req.body;
@@ -37,18 +39,23 @@ const CreateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             classes,
             payment,
         };
-        const createdStudent = yield student_service_1.default.save(studentData, null);
-        // Generate QR code for the student
-        const qrCode = yield student_service_1.default.generateQRCode(createdStudent.id); // Assuming generateQRCode function exists
-        // Prepare email content
+        // Save the student details
+        const createdStudent = yield student_service_1.default.save(studentData);
+        // Generate QR code for the student using the student ID
+        const qrCodeDataURL = yield student_service_1.default.generateQRCode(createdStudent._id);
+        // Upload the QR code image to Cloudinary
+        const cloudinaryURL = yield student_service_1.default.uploadQRImageToCloudinary(createdStudent._id, qrCodeDataURL);
+        // Prepare and send email content
         const subject = 'Student QR Code';
-        const htmlBody = email_templates_1.default.StudentQRCodeEmail({ fullName: 'User', qrCode });
+        const htmlBody = email_templates_1.default.StudentQRCodeEmail({ fullName: 'User', qrCode: cloudinaryURL });
         // Send email to the student's email address
         yield (0, emailServer_1.sendEmail)(email, subject, htmlBody, null);
         (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.CREATED, 'Student created successfully!', createdStudent);
     }
     catch (error) {
         console.error('Error creating student:', error);
+        // Handle the error or send an appropriate response
+        // CustomResponse(res, false, StatusCodes.INTERNAL_SERVER_ERROR, 'Failed to create student');
     }
 });
-exports.default = CreateStudent;
+exports.CreateStudent = CreateStudent;

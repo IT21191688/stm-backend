@@ -16,7 +16,7 @@ const save = async (user: any, session: any) => {
 
 
 const findById = async (id: string) => {
-  return await User.findById(id).populate("organization");
+  return await User.findById(id);
 };
 
 

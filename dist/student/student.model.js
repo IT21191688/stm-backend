@@ -63,6 +63,10 @@ const StudentSchema = new mongoose_1.default.Schema({
             },
         ],
     },
+    qrUrl: {
+        type: String,
+        required: [false, "qrUrl is required"],
+    },
     status: {
         type: Number,
         default: constant_1.default.WELLKNOWNSTATUS.ACTIVE,

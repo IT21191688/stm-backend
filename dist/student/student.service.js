@@ -1,4 +1,5 @@
 "use strict";
+// student.service.ts
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -14,24 +15,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const student_model_1 = __importDefault(require("../student/student.model"));
 const qrcode_1 = __importDefault(require("qrcode"));
+const cloudinary_1 = require("cloudinary");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+cloudinary_1.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY || '',
+    api_secret: process.env.CLOUDINARY_API_SECRET || '',
+});
 const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
     return yield student_model_1.default.findOne({ email: email });
 });
-const save = (student, session) => __awaiter(void 0, void 0, void 0, function* () {
-    if (session) {
-        return yield student.save({ session });
+const save = (studentData) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const newStudent = new student_model_1.default(studentData);
+        const savedStudent = yield newStudent.save();
+        return savedStudent;
     }
-    else {
-        return yield student.save();
+    catch (error) {
+        console.error('Error saving student:', error);
+        throw error;
     }
 });
 const findById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return yield student_model_1.default.findById(id).populate('classes');
 });
-const generateQRCode = (data) => __awaiter(void 0, void 0, void 0, function* () {
+const generateQRCode = (studentId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // Generate QR code as a data URL
-        const qrCodeDataURL = yield qrcode_1.default.toDataURL(data);
+        const studentIdString = studentId.toString(); // Convert ObjectId to string
+        const qrCodeDataURL = yield qrcode_1.default.toDataURL(studentIdString);
         return qrCodeDataURL;
     }
     catch (error) {
@@ -39,9 +51,24 @@ const generateQRCode = (data) => __awaiter(void 0, void 0, void 0, function* () 
         throw error;
     }
 });
+const uploadQRImageToCloudinary = (studentId, qrImageURL) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const cloudinaryResponse = yield cloudinary_1.v2.uploader.upload(qrImageURL.toString(), {
+            public_id: `qr_${studentId}`,
+            folder: 'student_qr_codes',
+        });
+        yield student_model_1.default.findByIdAndUpdate(studentId, { qrUrl: cloudinaryResponse.secure_url });
+        return cloudinaryResponse.secure_url;
+    }
+    catch (error) {
+        console.error('Error uploading QR image to Cloudinary:', error);
+        throw error;
+    }
+});
 exports.default = {
     findByEmail,
     save,
     findById,
-    generateQRCode
+    generateQRCode,
+    uploadQRImageToCloudinary,
 };
