@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 
 const AuthSchema = new mongoose.Schema(
   {
+      googleid: {
+        type: String
+    },
     _id: {
       type: String,
     },

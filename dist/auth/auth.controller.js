@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserLogin = void 0;
+exports.initGoogleAuthRoutes = exports.UserLogin = void 0;
 const auth_service_1 = __importDefault(require("./auth.service"));
 const auth_util_1 = __importDefault(require("./auth.util"));
 const http_status_codes_1 = require("http-status-codes");
@@ -45,3 +45,7 @@ const UserLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 exports.UserLogin = UserLogin;
+const initGoogleAuthRoutes = (app, passport) => {
+    auth_service_1.default.googleLogin(app, passport);
+};
+exports.initGoogleAuthRoutes = initGoogleAuthRoutes;

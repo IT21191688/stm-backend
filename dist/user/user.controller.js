@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RegisterUser = void 0;
+exports.GetUserProfile = exports.RegisterUser = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const auth_model_1 = __importDefault(require("../auth/auth.model"));
 const user_utill_1 = __importDefault(require("./user.utill"));
@@ -20,6 +20,8 @@ const mongoose_1 = require("mongoose");
 const response_1 = __importDefault(require("../util/response"));
 const user_model_1 = __importDefault(require("../user/user.model"));
 const user_service_1 = __importDefault(require("../user/user.service"));
+// Import custom errors
+const NotFoundError_1 = __importDefault(require("../error/error.classes/NotFoundError"));
 const BadRequestError_1 = __importDefault(require("../error/error.classes/BadRequestError"));
 const RegisterUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
@@ -61,3 +63,12 @@ const RegisterUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     return (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.CREATED, "User registered successfully!", createdUser);
 });
 exports.RegisterUser = RegisterUser;
+const GetUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const auth = req.auth;
+    const user = yield user_service_1.default.findById(auth._id);
+    if (!user) {
+        throw new NotFoundError_1.default("User not found!");
+    }
+    return (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.OK, "Profile fetched successfully!", user);
+});
+exports.GetUserProfile = GetUserProfile;

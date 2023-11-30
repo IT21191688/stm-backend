@@ -77,8 +77,26 @@ const RegisterUser = async (req: Request, res: Response) => {
 
 
 }
+const GetUserProfile = async (req: Request, res: Response) => {
+  const auth: any = req.auth;
+
+  const user = await userService.findById(auth._id);
+
+  if (!user) {
+    throw new NotFoundError("User not found!");
+  }
+
+  return CustomResponse(
+    res,
+    true,
+    StatusCodes.OK,
+    "Profile fetched successfully!",
+    user
+  );
+};
+
 
 
 export{
-    RegisterUser
+    RegisterUser,GetUserProfile
 }

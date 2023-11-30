@@ -53,5 +53,19 @@ const authorize = (rolesArray: any = []) => {
     }
   };
 };
+const googleAuthenticate = (req:any, res:any, next:any) => {
 
-export default { authorize };
+
+    //console.log(req.isAuthenticated())
+
+    if (req.isAuthenticated()) {
+
+        next();
+    }
+    else {
+
+        return res.send(false)
+    }
+
+};
+export default { authorize,googleAuthenticate };
