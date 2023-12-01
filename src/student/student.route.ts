@@ -12,7 +12,7 @@ const StudentRouter = Router();
 StudentRouter.post(
     "/sturegister",
  authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
- CreateStudent);
+ CreateStudent); 
 
 
 StudentRouter.get(
