@@ -6,9 +6,15 @@ import CustomResponse from '../util/response';
 
 const createClass = async (req: Request, res: Response) => {
   try {
-    const { className, classGrade, teacherName, price } = req.body;
+    const { className, classGrade, teacher, price } = req.body;
 
-    const classData = { className, classGrade, teacherName, price };
+    //should impliment if valid teacher id
+
+
+
+    
+
+    const classData = { className, classGrade, teacher, price };
 
     const newClass = await classService.createClass(classData);
 

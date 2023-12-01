@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema, Types } from 'mongoose';
 
 const ClassSchema = new mongoose.Schema({
   className: {
@@ -11,10 +11,9 @@ const ClassSchema = new mongoose.Schema({
     required: true,
     maxlength: 50,
   },
-  teacherName: {
-    type: String,
-    required: true,
-    maxlength: 100,
+  teacher: {
+    type: Schema.Types.ObjectId,
+    ref: 'Teacher', // Assuming the reference model for teachers is 'Teacher'
   },
   price: {
     type: Number,
@@ -26,3 +25,4 @@ const ClassSchema = new mongoose.Schema({
 });
 
 export default mongoose.model('Class', ClassSchema);
+

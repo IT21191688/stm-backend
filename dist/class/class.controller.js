@@ -18,8 +18,9 @@ const class_service_1 = __importDefault(require("../class/class.service"));
 const response_1 = __importDefault(require("../util/response"));
 const createClass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { className, classGrade, teacherName, price } = req.body;
-        const classData = { className, classGrade, teacherName, price };
+        const { className, classGrade, teacher, price } = req.body;
+        //should impliment if valid teacher id
+        const classData = { className, classGrade, teacher, price };
         const newClass = yield class_service_1.default.createClass(classData);
         (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.CREATED, 'Class created successfully!', newClass);
     }
