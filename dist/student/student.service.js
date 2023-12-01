@@ -38,7 +38,7 @@ const save = (studentData) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 const findById = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield student_model_1.default.findById(id).populate('classes');
+    return yield student_model_1.default.findById(id);
 });
 const generateQRCode = (studentId) => __awaiter(void 0, void 0, void 0, function* () {
     try {

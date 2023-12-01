@@ -37,7 +37,8 @@ const StudentSchema = new mongoose_1.default.Schema({
         },
     },
     profileImage: {
-        type: Object,
+        type: String,
+        required: [false]
     },
     role: {
         type: String,

@@ -10,4 +10,5 @@ const constant_1 = __importDefault(require("../constant"));
 //import authMiddleware from "../auth/auth.middleware";
 const StudentRouter = (0, express_1.Router)();
 StudentRouter.post("/sturegister", auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), student_controller_1.CreateStudent);
+StudentRouter.get("/getStudentDetails/:studentId", auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), student_controller_1.GetStudentDetails);
 exports.default = StudentRouter;

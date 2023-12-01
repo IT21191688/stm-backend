@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateStudent = void 0;
+exports.GetStudentDetails = exports.CreateStudent = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const response_1 = __importDefault(require("../util/response"));
 const student_service_1 = __importDefault(require("../student/student.service"));
@@ -23,7 +23,7 @@ const emailServer_1 = require("../util/emailServer");
 const email_templates_1 = __importDefault(require("../util/email-templates/email.templates"));
 const CreateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { firstname, lastname, age, grade, email, role, classes, payment, } = req.body;
+        const { firstname, lastname, age, grade, profileImage, email, role, classes, payment, } = req.body;
         const auth = req.auth;
         const user = yield user_service_1.default.findById(auth._id);
         if (!user) {
@@ -34,6 +34,7 @@ const CreateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             lastname,
             age,
             grade,
+            profileImage,
             email,
             role,
             classes,
@@ -59,3 +60,26 @@ const CreateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.CreateStudent = CreateStudent;
+const GetStudentDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const studentId = req.params.studentId;
+        const auth = req.auth;
+        console.log(studentId);
+        // Use your appointmentService to find the appointment by ID
+        const student = yield student_service_1.default.findById(studentId);
+        if (!student) {
+            throw new NotFoundError_1.default("Student not found!");
+        }
+        /*
+        if (appointment.addedBy.toString() !== auth._id) {
+          throw new ForbiddenError("You are not authorized to view this appointment!");
+        }
+      */
+        (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.OK, "Student details retrieved successfully!", student);
+    }
+    catch (e) {
+        // Handle any errors that may occur during the process
+        throw e;
+    }
+});
+exports.GetStudentDetails = GetStudentDetails;

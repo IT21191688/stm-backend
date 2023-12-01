@@ -28,7 +28,7 @@ const save = async (studentData: any) => {
 };
 
 const findById = async (id: string) => {
-  return await Student.findById(id).populate('classes');
+  return await Student.findById(id);
 };
 
 const generateQRCode = async (studentId: any): Promise<string> => {

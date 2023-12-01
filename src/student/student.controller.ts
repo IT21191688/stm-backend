@@ -16,6 +16,7 @@ const CreateStudent = async (req: Request, res: Response) => {
       lastname,
       age,
       grade,
+      profileImage,
       email,
       role,
       classes,
@@ -35,6 +36,7 @@ const CreateStudent = async (req: Request, res: Response) => {
       lastname,
       age,
       grade,
+      profileImage,
       email,
       role,
       classes,
@@ -74,4 +76,39 @@ const CreateStudent = async (req: Request, res: Response) => {
   }
 };
 
-export { CreateStudent };
+const GetStudentDetails = async (req: Request, res: Response) => {
+  try {
+    const studentId: any = req.params.studentId;
+    const auth: any = req.auth;
+
+
+    console.log(studentId)
+
+    // Use your appointmentService to find the appointment by ID
+    const student: any = await studentService.findById(studentId);
+
+    if (!student) {
+      throw new NotFoundError("Student not found!");
+    }
+
+
+    /*
+    if (appointment.addedBy.toString() !== auth._id) {
+      throw new ForbiddenError("You are not authorized to view this appointment!");
+    }
+  */
+    CustomResponse(
+      res,
+      true,
+      StatusCodes.OK,
+      "Student details retrieved successfully!",
+      student
+    );
+  } catch (e) {
+    // Handle any errors that may occur during the process
+    throw e;
+  }
+};
+
+
+export { CreateStudent,GetStudentDetails };
