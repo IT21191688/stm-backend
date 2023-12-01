@@ -8,6 +8,7 @@ import userService from '../user/user.service';
 import NotFoundError from '../error/error.classes/NotFoundError';
 import { sendEmail } from '../util/emailServer';
 import emailService from '../util/email-templates/email.templates';
+import constants from '../constant';
 
 const CreateStudent = async (req: Request, res: Response) => {
   try {
@@ -82,9 +83,8 @@ const GetStudentDetails = async (req: Request, res: Response) => {
     const auth: any = req.auth;
 
 
-    console.log(studentId)
+    //console.log(studentId)
 
-    // Use your appointmentService to find the appointment by ID
     const student: any = await studentService.findById(studentId);
 
     if (!student) {
@@ -93,8 +93,8 @@ const GetStudentDetails = async (req: Request, res: Response) => {
 
 
     /*
-    if (appointment.addedBy.toString() !== auth._id) {
-      throw new ForbiddenError("You are not authorized to view this appointment!");
+    if (student.addedBy.toString() !== auth._id) {
+      throw new ForbiddenError("You are not authorized to view this student!");
     }
   */
     CustomResponse(
@@ -111,4 +111,68 @@ const GetStudentDetails = async (req: Request, res: Response) => {
 };
 
 
-export { CreateStudent,GetStudentDetails };
+
+const UpdateStudentDetails = async (req: Request, res: Response) => {
+  const studentId: any = req.params.studentId;
+  const auth: any = req.auth;
+  const body: any = req.body;
+
+  const student: any = await studentService.findById(studentId);
+
+  if (!student) throw new NotFoundError("Student not found!");
+
+  //let today = new Date();
+
+  //updating process
+  for (let key in body) {
+    if (key !== "addedBy") {
+      student[key] = body[key];
+    }
+  }
+
+  try {
+    await studentService.save(student);
+    CustomResponse(
+      res,
+      true,
+      StatusCodes.OK,
+      "Student updated successfully!",
+      student
+    );
+  } catch (e) {
+    throw e;
+  }
+};
+
+const DeleteStudentDeteils = async (req: Request, res: Response) => {
+  const studentId: any = req.params.studentId;
+  const auth: any = req.auth;
+
+  const student: any = await studentService.findById(studentId);
+  console.log(studentId)
+
+  if (!student) throw new NotFoundError("Student not found!");
+
+  student.status = constants.WELLKNOWNSTATUS.INACTIVE;
+
+  try {
+    await studentService.save(student);
+    CustomResponse(
+      res,
+      true,
+      StatusCodes.OK,
+      "Student deleted successfully!",
+      null
+    );
+  } catch (e) {
+    throw e;
+  }
+};
+
+
+
+
+
+
+
+export { CreateStudent,GetStudentDetails,UpdateStudentDetails,DeleteStudentDeteils };

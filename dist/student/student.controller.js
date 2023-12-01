@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetStudentDetails = exports.CreateStudent = void 0;
+exports.DeleteStudentDeteils = exports.UpdateStudentDetails = exports.GetStudentDetails = exports.CreateStudent = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const response_1 = __importDefault(require("../util/response"));
 const student_service_1 = __importDefault(require("../student/student.service"));
@@ -21,6 +21,7 @@ const user_service_1 = __importDefault(require("../user/user.service"));
 const NotFoundError_1 = __importDefault(require("../error/error.classes/NotFoundError"));
 const emailServer_1 = require("../util/emailServer");
 const email_templates_1 = __importDefault(require("../util/email-templates/email.templates"));
+const constant_1 = __importDefault(require("../constant"));
 const CreateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { firstname, lastname, age, grade, profileImage, email, role, classes, payment, } = req.body;
@@ -64,15 +65,14 @@ const GetStudentDetails = (req, res) => __awaiter(void 0, void 0, void 0, functi
     try {
         const studentId = req.params.studentId;
         const auth = req.auth;
-        console.log(studentId);
-        // Use your appointmentService to find the appointment by ID
+        //console.log(studentId)
         const student = yield student_service_1.default.findById(studentId);
         if (!student) {
             throw new NotFoundError_1.default("Student not found!");
         }
         /*
-        if (appointment.addedBy.toString() !== auth._id) {
-          throw new ForbiddenError("You are not authorized to view this appointment!");
+        if (student.addedBy.toString() !== auth._id) {
+          throw new ForbiddenError("You are not authorized to view this student!");
         }
       */
         (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.OK, "Student details retrieved successfully!", student);
@@ -83,3 +83,43 @@ const GetStudentDetails = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.GetStudentDetails = GetStudentDetails;
+const UpdateStudentDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const studentId = req.params.studentId;
+    const auth = req.auth;
+    const body = req.body;
+    const student = yield student_service_1.default.findById(studentId);
+    if (!student)
+        throw new NotFoundError_1.default("Student not found!");
+    //let today = new Date();
+    //updating process
+    for (let key in body) {
+        if (key !== "addedBy") {
+            student[key] = body[key];
+        }
+    }
+    try {
+        yield student_service_1.default.save(student);
+        (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.OK, "Student updated successfully!", student);
+    }
+    catch (e) {
+        throw e;
+    }
+});
+exports.UpdateStudentDetails = UpdateStudentDetails;
+const DeleteStudentDeteils = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const studentId = req.params.studentId;
+    const auth = req.auth;
+    const student = yield student_service_1.default.findById(studentId);
+    console.log(studentId);
+    if (!student)
+        throw new NotFoundError_1.default("Student not found!");
+    student.status = constant_1.default.WELLKNOWNSTATUS.INACTIVE;
+    try {
+        yield student_service_1.default.save(student);
+        (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.OK, "Student deleted successfully!", null);
+    }
+    catch (e) {
+        throw e;
+    }
+});
+exports.DeleteStudentDeteils = DeleteStudentDeteils;

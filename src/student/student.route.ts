@@ -1,7 +1,7 @@
 import { Router } from "express";
 import authMiddleware from "../auth/auth.middleware";
 
-import { CreateStudent,GetStudentDetails } from "./student.controller";
+import { CreateStudent,GetStudentDetails,UpdateStudentDetails ,DeleteStudentDeteils} from "./student.controller";
 import constants from "../constant";
 //import authMiddleware from "../auth/auth.middleware";
 
@@ -19,6 +19,20 @@ StudentRouter.get(
   "/getStudentDetails/:studentId",
   authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
   GetStudentDetails
+);
+
+
+
+StudentRouter.patch(
+  "/update/:studentId",
+  authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
+  UpdateStudentDetails
+);
+
+StudentRouter.patch(
+  "/delete/:studentId",
+  authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
+  DeleteStudentDeteils
 );
 
 export default StudentRouter;
