@@ -47,12 +47,14 @@ const deletePayment = (paymentId) => __awaiter(void 0, void 0, void 0, function*
         throw error;
     }
 });
-const findAllPaymentsByStudentAndYear = (studentId, year) => __awaiter(void 0, void 0, void 0, function* () {
+const findAllPaymentsByStudentAndYear = (studentId, year, month) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const payments = yield payment_model_1.default.find({
-            studentId,
-            paymentYear: year, // Assuming paymentYear contains the ObjectId of the specific year
-        }).populate('paymentMonth'); // Assuming you want to populate the paymentMonth field
+            studentId: studentId,
+            paymentYear: year,
+            paymentMonth: month, // Assuming month is the specific month you want to search for
+        });
+        //console.log(year,month)
         return payments;
     }
     catch (error) {

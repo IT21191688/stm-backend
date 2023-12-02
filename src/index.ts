@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./common/common.config";
-import { scheduledYear,scheduledMonth } from "./util/cronJob";
+import { scheduleAutomaticPayments } from "./util/cronJob";
 import errorHandlerMiddleware from "./error/error.middleware";
 import "express-async-errors";
 import NotFoundError from "./error/error.classes/NotFoundError";
@@ -26,9 +26,10 @@ app.all("*", async (req: Request, res: Response) => {
 });
 
 //setup cron jobs
-scheduledYear();
-scheduledMonth();
+//scheduledYear();
+//scheduledMonth();
 //sendAppointmentReminders();
+scheduleAutomaticPayments();
 
 const start = async () => {
   const port = process.env.PORT || 5000;

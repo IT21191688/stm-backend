@@ -22,6 +22,7 @@ const CreateStudent = async (req: Request, res: Response) => {
       role,
       classes,
       payment,
+      payementType
     } = req.body;
 
     const auth: any = req.auth;
@@ -42,6 +43,7 @@ const CreateStudent = async (req: Request, res: Response) => {
       role,
       classes,
       payment,
+      payementType
     };
 
     // Save the student details

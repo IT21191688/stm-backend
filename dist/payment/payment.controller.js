@@ -64,9 +64,26 @@ exports.deletePayment = deletePayment;
 const getAllPaymentsByStudentAndYear = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { studentId } = req.params;
-        const { year } = req.query;
-        const payments = yield payment_service_1.default.findAllPaymentsByStudentAndYear(studentId, year);
-        (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.OK, 'Payments retrieved successfully!', payments);
+        //const { year, month } = req.query; // Extract month from query parameters
+        const { filter } = req.query;
+        if (typeof filter === 'string') {
+            try {
+                const { year, month } = JSON.parse(filter);
+                // Now you have `year` and `month` as separate variables containing the values from the JSON object
+                console.log(year, month);
+                const payments = yield payment_service_1.default.findAllPaymentsByStudentAndYear(studentId, year, month);
+                //console.log(payments)
+                (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.OK, 'Payments retrieved successfully!', payments);
+            }
+            catch (error) {
+                console.error('Error parsing JSON:', error);
+                // Handle JSON parsing error
+            }
+        }
+        else {
+            // Handle cases where filter is not a string or undefined
+            console.log("type not String");
+        }
     }
     catch (error) {
         (0, response_1.default)(res, false, http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, error.message, null);

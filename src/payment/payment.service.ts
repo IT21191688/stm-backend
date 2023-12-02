@@ -34,12 +34,15 @@ const deletePayment = async (paymentId:String) => {
   }
 };
 
-const findAllPaymentsByStudentAndYear = async (studentId:String, year:any) => {
+const findAllPaymentsByStudentAndYear = async (studentId:String, year:any, month:any) => {
   try {
     const payments = await Payment.find({
-      studentId,
-      paymentYear: year, // Assuming paymentYear contains the ObjectId of the specific year
-    }).populate('paymentMonth'); // Assuming you want to populate the paymentMonth field
+      studentId:studentId,
+      paymentYear: year,
+      paymentMonth: month, // Assuming month is the specific month you want to search for
+    }) 
+
+    //console.log(year,month)
 
     return payments;
   } catch (error) {
@@ -47,6 +50,7 @@ const findAllPaymentsByStudentAndYear = async (studentId:String, year:any) => {
     throw error;
   }
 };
+
 
 
 export default {

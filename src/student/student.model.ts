@@ -52,7 +52,7 @@ const StudentSchema = new mongoose.Schema(
       type: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "class",
+          ref: "Class",
         },
       ],
     },
@@ -60,9 +60,13 @@ const StudentSchema = new mongoose.Schema(
       type: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "payment",
+          ref: "Payment",
         },
       ],
+    },
+    payementType: {
+      type:String,
+      required: [true, "payementType is required"],
     },
     qrUrl:{
         type:String,

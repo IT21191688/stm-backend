@@ -24,7 +24,7 @@ const email_templates_1 = __importDefault(require("../util/email-templates/email
 const constant_1 = __importDefault(require("../constant"));
 const CreateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { firstname, lastname, age, grade, profileImage, email, role, classes, payment, } = req.body;
+        const { firstname, lastname, age, grade, profileImage, email, role, classes, payment, payementType } = req.body;
         const auth = req.auth;
         const user = yield user_service_1.default.findById(auth._id);
         if (!user) {
@@ -40,6 +40,7 @@ const CreateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             role,
             classes,
             payment,
+            payementType
         };
         // Save the student details
         const createdStudent = yield student_service_1.default.save(studentData);

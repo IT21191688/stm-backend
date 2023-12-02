@@ -20,13 +20,11 @@ const PaymentSchema = new mongoose_1.default.Schema({
         required: true,
     },
     paymentMonth: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: 'PaymentMonth',
+        type: String,
         required: true,
     },
     paymentYear: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: 'PaymentYear',
+        type: String,
         required: true,
     },
     classId: {
@@ -38,10 +36,14 @@ const PaymentSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    paymentStatus: {
+        type: String,
+        required: true
+    },
     userId: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: 'User',
-        required: true,
+        required: false,
     },
     // Other necessary fields specific to your use case
 }, {

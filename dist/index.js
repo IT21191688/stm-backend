@@ -34,9 +34,10 @@ app.all("*", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     throw new NotFoundError_1.default("API endpoint not found!");
 }));
 //setup cron jobs
-(0, cronJob_1.scheduledYear)();
-(0, cronJob_1.scheduledMonth)();
+//scheduledYear();
+//scheduledMonth();
 //sendAppointmentReminders();
+(0, cronJob_1.scheduleAutomaticPayments)();
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     const port = process.env.PORT || 5000;
     try {

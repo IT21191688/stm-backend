@@ -52,12 +52,18 @@ export { sendAppointmentReminders };
 // cronJob.js
 
 import cron from 'node-cron';
-import { addYearIfNotExists } from '../YearMonth/year/year.controller';
+//import { addYearIfNotExists } from '../YearMonth/year/year.controller';
+import mongoose from 'mongoose';
+//import monthService from '../YearMonth/month/months.service';
+//import yearService from '../YearMonth/year/year.service';
+import PaymentModel from '../payment/payment.model'; // Import your Payment model
+import StudentModel from '../student/student.model'; // Import your Student model
+import ClassModel from '../class/class.model';
 
-import monthService from '../YearMonth/month/months.service';
-import yearService from '../YearMonth/year/year.service';
+import paymentService from '../payment/payment.service';
 
 
+/*
 const scheduledMonth = () => {
   cron.schedule('0 0 1 * *', async () => {
     try {
@@ -90,7 +96,76 @@ const scheduledYear = () => {
   });
 };
 
+*/
+
+const generatePayments = async () => {
+  try {
+    // Get all students
+    const allStudents = await StudentModel.find().populate('classes'); // Assuming 'classes' field contains class references
+
+    console.log(allStudents)
+    // Loop through each student
+    for (const student of allStudents) {
+      // Get class IDs for the current student
+      const studentClassIds = student.classes.map((classRef) => classRef._id);
+
+      
+    console.log(studentClassIds)
+
+      // Fetch details for each class of the current student
+      for (const classId of studentClassIds) {
+        // Find the class details by ID
+        const classDetails = await ClassModel.findById(classId);
+
+         console.log(classDetails)
+
+        if (classDetails) {
+          // Create payment data for the current student in the current class for the current month
+          const paymentData = {
+            paymentId: new mongoose.Types.ObjectId(), // Generate unique payment ID
+            studentId: student._id,
+            paymentDate: new Date(), // Current date
+            paymentMonth: new Date().toLocaleString('default', { month: 'long' }), // Current month name
+            paymentYear: new Date().getFullYear().toString(), // Current year as string
+            classId: classDetails._id,
+            paymentType: student.payementType,
+            paymentStatus:'Not Paid'
+            // Other necessary fields specific to your use case
+          };
+
+          console.log(paymentData)
+          // Create payment for the current student in the current class
+          await paymentService.createPayment(paymentData);
+        }
+      }
+    }
+
+    console.log('Payments generated successfully for all students based on their classes.');
+  } catch (error) {
+    console.error('Error generating payments:', error);
+    throw error;
+  }
+};
+
+
+// Cron job to trigger the automatic payment generation function on the 1st day of every month
+
+//every minite * * * * *
+//1st day of month 0 0 1 * *
+const scheduleAutomaticPayments = () => {
+  cron.schedule('* * * * *', async () => {
+    try {
+      await generatePayments(); // Call the function for generating payments
+    } catch (error) {
+      console.error('Error in automatic payment generation:', error);
+    }
+  }, {
+    scheduled: true,
+    timezone: 'Asia/Colombo', // Replace 'YOUR_TIMEZONE' with your desired timezone (e.g., 'UTC', 'America/New_York', etc.)
+  });
+};
 
 
 
-export{scheduledYear,scheduledMonth};
+
+export{scheduleAutomaticPayments};
