@@ -107,17 +107,17 @@ const generatePayments = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Get all students
         const allStudents = yield student_model_1.default.find().populate('classes'); // Assuming 'classes' field contains class references
-        console.log(allStudents);
+        //console.log(allStudents)
         // Loop through each student
         for (const student of allStudents) {
             // Get class IDs for the current student
             const studentClassIds = student.classes.map((classRef) => classRef._id);
-            console.log(studentClassIds);
+            // console.log(studentClassIds)
             // Fetch details for each class of the current student
             for (const classId of studentClassIds) {
                 // Find the class details by ID
                 const classDetails = yield class_model_1.default.findById(classId);
-                console.log(classDetails);
+                //console.log(classDetails)
                 if (classDetails) {
                     // Create payment data for the current student in the current class for the current month
                     const paymentData = {
@@ -131,7 +131,7 @@ const generatePayments = () => __awaiter(void 0, void 0, void 0, function* () {
                         paymentStatus: 'Not Paid'
                         // Other necessary fields specific to your use case
                     };
-                    console.log(paymentData);
+                    //console.log(paymentData)
                     // Create payment for the current student in the current class
                     yield payment_service_1.default.createPayment(paymentData);
                 }

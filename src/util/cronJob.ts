@@ -103,21 +103,21 @@ const generatePayments = async () => {
     // Get all students
     const allStudents = await StudentModel.find().populate('classes'); // Assuming 'classes' field contains class references
 
-    console.log(allStudents)
+    //console.log(allStudents)
     // Loop through each student
     for (const student of allStudents) {
       // Get class IDs for the current student
       const studentClassIds = student.classes.map((classRef) => classRef._id);
 
       
-    console.log(studentClassIds)
+   // console.log(studentClassIds)
 
       // Fetch details for each class of the current student
       for (const classId of studentClassIds) {
         // Find the class details by ID
         const classDetails = await ClassModel.findById(classId);
 
-         console.log(classDetails)
+         //console.log(classDetails)
 
         if (classDetails) {
           // Create payment data for the current student in the current class for the current month
@@ -133,7 +133,7 @@ const generatePayments = async () => {
             // Other necessary fields specific to your use case
           };
 
-          console.log(paymentData)
+          //console.log(paymentData)
           // Create payment for the current student in the current class
           await paymentService.createPayment(paymentData);
         }

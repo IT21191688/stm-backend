@@ -56,14 +56,6 @@ const StudentSchema = new mongoose.Schema(
         },
       ],
     },
-    payement: {
-      type: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Payment",
-        },
-      ],
-    },
     payementType: {
       type:String,
       required: [true, "payementType is required"],
