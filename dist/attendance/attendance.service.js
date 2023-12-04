@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAttendanceByStudentClassAndMonth = exports.updateAttendance = exports.createAttendance = void 0;
 const attendance_model_1 = __importDefault(require("../attendance/attendance.model"));
 // Function to create new attendance
 const createAttendance = (attendanceData) => __awaiter(void 0, void 0, void 0, function* () {
@@ -25,7 +24,6 @@ const createAttendance = (attendanceData) => __awaiter(void 0, void 0, void 0, f
         throw new Error('Could not create attendance');
     }
 });
-exports.createAttendance = createAttendance;
 const updateAttendance = (id, attendanceData) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const updatedAttendance = yield attendance_model_1.default.findByIdAndUpdate(id, attendanceData, { new: true });
@@ -38,7 +36,6 @@ const updateAttendance = (id, attendanceData) => __awaiter(void 0, void 0, void 
         throw new Error('Could not update attendance');
     }
 });
-exports.updateAttendance = updateAttendance;
 const getAttendanceByStudentClassAndMonth = (studentId, classId, month, year) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Implement logic to fetch attendance by student, class, and month
@@ -54,4 +51,8 @@ const getAttendanceByStudentClassAndMonth = (studentId, classId, month, year) =>
         throw new Error('Could not retrieve attendance');
     }
 });
-exports.getAttendanceByStudentClassAndMonth = getAttendanceByStudentClassAndMonth;
+exports.default = {
+    createAttendance,
+    updateAttendance,
+    getAttendanceByStudentClassAndMonth
+};

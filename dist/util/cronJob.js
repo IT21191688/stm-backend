@@ -1,53 +1,4 @@
 "use strict";
-/*import schedule from "node-schedule";
-import appointmentService from "../appointment/appointment.service";
-import emailTemplates from "./email-templates/email.templates";
-import userService from "../user/user.service";
-import { sendEmail } from "./emailServer";
-import { timeSlots } from "../appointment/appointment.util";
-
-//cron job helper fun
-export const cronJob = (cronTime: string, callback: () => void) => {
-  schedule.scheduleJob(cronTime, callback);
-};
-
-// 30 * * * * * => every 30 seconds
-// 0 6 * * * => every day at 6 am
-
-//send appointment reminders daily at 6 am
-/*
-const sendAppointmentReminders = () => {
-  cronJob("* * * * *", async () => {
-    console.log("Appointment reminder cron job running...");
-    //get today's date
-    const today = new Date();
-
-    //get all appointments for today
-    const appointments: any = await appointmentService.findByDateAndApproved(
-      new Date(today.toISOString().split("T")[0])
-    );
-
-    appointments.forEach(async (appointment: any) => {
-      let user: any = await userService.findById(appointment.addedBy);
-
-      let data: any = {
-        userName: user.fullName,
-        appointmentDate: appointment.appointmentDate,
-        appointmentTime: timeSlots.find((time: any) => {
-          return time.id === appointment.appointmentTime;
-        })?.timeSlot,
-      };
-
-      let htmlBody = emailTemplates.AppointmentReminderTemplate(data);
-
-      await sendEmail(user.email, "Appointment Reminder", htmlBody, null);
-    });
-  });
-};
-
-export { sendAppointmentReminders };
-
-*/
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -61,78 +12,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.scheduleAutomaticPayments = void 0;
-// cronJob.js
+exports.scheduleAutomaticAttendance = exports.scheduleAutomaticPayments = void 0;
 const node_cron_1 = __importDefault(require("node-cron"));
-//import { addYearIfNotExists } from '../YearMonth/year/year.controller';
 const mongoose_1 = __importDefault(require("mongoose"));
-const student_model_1 = __importDefault(require("../student/student.model")); // Import your Student model
+const student_model_1 = __importDefault(require("../student/student.model"));
 const class_model_1 = __importDefault(require("../class/class.model"));
 const payment_service_1 = __importDefault(require("../payment/payment.service"));
-/*
-const scheduledMonth = () => {
-  cron.schedule('0 0 1 * *', async () => {
-    try {
-      const currentMonth = new Date().toLocaleString('default', { month: 'long' });
-      const currentYear = new Date().getFullYear();
-      const yearId = await yearService.getYearId(currentYear); // Assuming you have a service method to get year ID
-      
-      const newMonth = await monthService.createMonth(currentMonth, yearId);
-      console.log(`Added month ${currentMonth} for year ${currentYear}`);
-    } catch (error) {
-      console.error('Error in month creation:', error);
-    }
-  });
-};
-
-// Schedule the job to run at the beginning of each year (January 1st at 00:00)
-const scheduledYear = () => {
-  cron.schedule('0 0 1 1 *', async () => {
-    try {
-      const createdYear = await addYearIfNotExists();
-
-      if (createdYear) {
-        console.log('Year created:', createdYear);
-      } else {
-        console.log('Current year already exists in the database.');
-      }
-    } catch (error) {
-      console.error('Error in year check and add operation:', error);
-    }
-  });
-};
-
-*/
+const attendance_service_1 = __importDefault(require("../attendance/attendance.service"));
 const generatePayments = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Get all students
-        const allStudents = yield student_model_1.default.find().populate('classes'); // Assuming 'classes' field contains class references
-        //console.log(allStudents)
-        // Loop through each student
+        const allStudents = yield student_model_1.default.find().populate('classes');
         for (const student of allStudents) {
             // Get class IDs for the current student
             const studentClassIds = student.classes.map((classRef) => classRef._id);
-            // console.log(studentClassIds)
-            // Fetch details for each class of the current student
             for (const classId of studentClassIds) {
                 // Find the class details by ID
                 const classDetails = yield class_model_1.default.findById(classId);
                 //console.log(classDetails)
                 if (classDetails) {
-                    // Create payment data for the current student in the current class for the current month
                     const paymentData = {
-                        paymentId: new mongoose_1.default.Types.ObjectId(), // Generate unique payment ID
+                        paymentId: new mongoose_1.default.Types.ObjectId(),
                         studentId: student._id,
                         paymentDate: new Date(), // Current date
-                        paymentMonth: new Date().toLocaleString('default', { month: 'long' }), // Current month name
-                        paymentYear: new Date().getFullYear().toString(), // Current year as string
+                        paymentMonth: new Date().toLocaleString('default', { month: 'long' }),
+                        paymentYear: new Date().getFullYear().toString(), // 
                         classId: classDetails._id,
                         paymentType: student.payementType,
                         paymentStatus: 'Not Paid'
-                        // Other necessary fields specific to your use case
                     };
-                    //console.log(paymentData)
-                    // Create payment for the current student in the current class
                     yield payment_service_1.default.createPayment(paymentData);
                 }
             }
@@ -144,7 +52,6 @@ const generatePayments = () => __awaiter(void 0, void 0, void 0, function* () {
         throw error;
     }
 });
-// Cron job to trigger the automatic payment generation function on the 1st day of every month
 //every minite * * * * *
 //1st day of month 0 0 1 * *
 const scheduleAutomaticPayments = () => {
@@ -157,7 +64,44 @@ const scheduleAutomaticPayments = () => {
         }
     }), {
         scheduled: true,
-        timezone: 'Asia/Colombo', // Replace 'YOUR_TIMEZONE' with your desired timezone (e.g., 'UTC', 'America/New_York', etc.)
+        timezone: 'Asia/Colombo',
     });
 };
 exports.scheduleAutomaticPayments = scheduleAutomaticPayments;
+const createAttendanceForAllStudents = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const allStudents = yield student_model_1.default.find().populate('classes');
+        allStudents.forEach((student) => __awaiter(void 0, void 0, void 0, function* () {
+            for (const classItem of student.classes) {
+                const currentDate = new Date();
+                const month = currentDate.getMonth() + 1;
+                const year = currentDate.getFullYear();
+                const attendanceData = {
+                    studentId: student._id,
+                    classId: classItem._id,
+                    month: month,
+                    year: year,
+                };
+                yield attendance_service_1.default.createAttendance(attendanceData);
+            }
+        }));
+        console.log('Attendance created for all students in their classes.');
+    }
+    catch (error) {
+        console.error('Error creating attendance:', error);
+    }
+});
+const scheduleAutomaticAttendance = () => {
+    node_cron_1.default.schedule('* * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            yield createAttendanceForAllStudents(); // Call the function to create attendance
+        }
+        catch (error) {
+            console.error('Error in automatic attendance creation:', error);
+        }
+    }), {
+        scheduled: true,
+        timezone: 'Asia/Colombo',
+    });
+};
+exports.scheduleAutomaticAttendance = scheduleAutomaticAttendance;

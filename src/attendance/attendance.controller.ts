@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as attendanceService from '../attendance/attendance.service';
+import attendanceService from '../attendance/attendance.service';
 import CustomResponse from '../util/response';
 import { StatusCodes } from 'http-status-codes';
 

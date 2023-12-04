@@ -44,7 +44,7 @@ const getAttendanceByStudentClassAndMonth = async (studentId:String, classId:Str
 };
 
 
-export{
+export default{
     createAttendance,
     updateAttendance,
     getAttendanceByStudentClassAndMonth

@@ -1,4 +1,4 @@
-// attendance.model.js
+
 
 import mongoose from 'mongoose';
 
