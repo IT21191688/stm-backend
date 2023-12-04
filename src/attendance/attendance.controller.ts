@@ -3,15 +3,33 @@ import attendanceService from '../attendance/attendance.service';
 import CustomResponse from '../util/response';
 import { StatusCodes } from 'http-status-codes';
 
+
 const createAttendance = async (req: Request, res: Response) => {
   try {
+
     const attendanceData = req.body;
-    const attendance = await attendanceService.createAttendance(attendanceData);
-    return CustomResponse(res, true, StatusCodes.CREATED, 'Attendance created successfully', attendance);
+
+    const existingAttendance = await attendanceService.checkAttendanceExists(attendanceData.studentId, attendanceData.classId, attendanceData.month, attendanceData.year);
+
+    console.log(attendanceData.studentId)
+    if(!existingAttendance){
+
+
+        const attendance = await attendanceService.createAttendance(attendanceData);
+        return CustomResponse(res, true, StatusCodes.CREATED, 'Attendance created successfully', attendance);
+
+    }else{
+        console.log("exist")
+    }
+    
   } catch (error: any) {
     return CustomResponse(res, false, StatusCodes.INTERNAL_SERVER_ERROR, error.message, null);
   }
 };
+
+
+
+
 
 const updateAttendance = async (req: Request, res: Response) => {
   try {

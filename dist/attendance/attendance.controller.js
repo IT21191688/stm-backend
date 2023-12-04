@@ -19,8 +19,15 @@ const http_status_codes_1 = require("http-status-codes");
 const createAttendance = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const attendanceData = req.body;
-        const attendance = yield attendance_service_1.default.createAttendance(attendanceData);
-        return (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.CREATED, 'Attendance created successfully', attendance);
+        const existingAttendance = yield attendance_service_1.default.checkAttendanceExists(attendanceData.studentId, attendanceData.classId, attendanceData.month, attendanceData.year);
+        console.log(attendanceData.studentId);
+        if (!existingAttendance) {
+            const attendance = yield attendance_service_1.default.createAttendance(attendanceData);
+            return (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.CREATED, 'Attendance created successfully', attendance);
+        }
+        else {
+            console.log("exist");
+        }
     }
     catch (error) {
         return (0, response_1.default)(res, false, http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, error.message, null);

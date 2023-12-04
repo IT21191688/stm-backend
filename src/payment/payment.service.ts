@@ -2,9 +2,19 @@ import Payment from './payment.model';
 
 const createPayment = async (paymentData:any) => {
   try {
+
+    const existPayment=await findAllPaymentsByStudentAndYear(paymentData.studentId,paymentData.year,paymentData.month);
+
+
+    if(!existPayment){
+
+      
     const newPayment = new Payment(paymentData);
     const createdPayment = await newPayment.save();
     return createdPayment;
+
+    }
+
   } catch (error) {
     throw error;
   }

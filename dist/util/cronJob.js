@@ -24,7 +24,6 @@ const generatePayments = () => __awaiter(void 0, void 0, void 0, function* () {
         // Get all students
         const allStudents = yield student_model_1.default.find().populate('classes');
         for (const student of allStudents) {
-            // Get class IDs for the current student
             const studentClassIds = student.classes.map((classRef) => classRef._id);
             for (const classId of studentClassIds) {
                 // Find the class details by ID

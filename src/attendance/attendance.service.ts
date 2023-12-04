@@ -5,8 +5,23 @@ import Attendance from '../attendance/attendance.model';
 // Function to create new attendance
 const createAttendance = async (attendanceData:any) => {
   try {
-    const newAttendance = await Attendance.create(attendanceData);
-    return newAttendance;
+
+      const existingAttendance = await checkAttendanceExists(
+      attendanceData.studentId,
+      attendanceData.classId,
+      attendanceData.month,
+      attendanceData.year
+    );
+
+    if(!existingAttendance){
+
+        const newAttendance = await Attendance.create(attendanceData);
+        return newAttendance;
+
+    }else{
+        console.log("Exist")
+    }
+    
   } catch (error) {
     throw new Error('Could not create attendance');
   }
@@ -43,9 +58,20 @@ const getAttendanceByStudentClassAndMonth = async (studentId:String, classId:Str
   }
 };
 
+const checkAttendanceExists = async (studentId:String, classId:String, month:String, year:String) => {
+  const existingAttendance = await Attendance.findOne({
+    studentId: studentId,
+    classId: classId,
+    month: month,
+    year: year,
+  });
+  return existingAttendance;
+};
+
 
 export default{
     createAttendance,
     updateAttendance,
-    getAttendanceByStudentClassAndMonth
+    getAttendanceByStudentClassAndMonth,
+    checkAttendanceExists
 }

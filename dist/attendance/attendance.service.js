@@ -17,8 +17,14 @@ const attendance_model_1 = __importDefault(require("../attendance/attendance.mod
 // Function to create new attendance
 const createAttendance = (attendanceData) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newAttendance = yield attendance_model_1.default.create(attendanceData);
-        return newAttendance;
+        const existingAttendance = yield checkAttendanceExists(attendanceData.studentId, attendanceData.classId, attendanceData.month, attendanceData.year);
+        if (!existingAttendance) {
+            const newAttendance = yield attendance_model_1.default.create(attendanceData);
+            return newAttendance;
+        }
+        else {
+            console.log("Exist");
+        }
     }
     catch (error) {
         throw new Error('Could not create attendance');
@@ -51,8 +57,18 @@ const getAttendanceByStudentClassAndMonth = (studentId, classId, month, year) =>
         throw new Error('Could not retrieve attendance');
     }
 });
+const checkAttendanceExists = (studentId, classId, month, year) => __awaiter(void 0, void 0, void 0, function* () {
+    const existingAttendance = yield attendance_model_1.default.findOne({
+        studentId: studentId,
+        classId: classId,
+        month: month,
+        year: year,
+    });
+    return existingAttendance;
+});
 exports.default = {
     createAttendance,
     updateAttendance,
-    getAttendanceByStudentClassAndMonth
+    getAttendanceByStudentClassAndMonth,
+    checkAttendanceExists
 };

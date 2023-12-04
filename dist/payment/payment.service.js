@@ -15,9 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const payment_model_1 = __importDefault(require("./payment.model"));
 const createPayment = (paymentData) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newPayment = new payment_model_1.default(paymentData);
-        const createdPayment = yield newPayment.save();
-        return createdPayment;
+        const existPayment = yield findAllPaymentsByStudentAndYear(paymentData.studentId, paymentData.year, paymentData.month);
+        if (!existPayment) {
+            const newPayment = new payment_model_1.default(paymentData);
+            const createdPayment = yield newPayment.save();
+            return createdPayment;
+        }
     }
     catch (error) {
         throw error;
