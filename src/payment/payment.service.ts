@@ -2,23 +2,30 @@ import Payment from './payment.model';
 
 const createPayment = async (paymentData:any) => {
   try {
+    const existPayment = await findExistPaymentsByStudentAndYear(
+      paymentData.studentId,
+      paymentData.paymentYear,
+      paymentData.paymentMonth,
+      paymentData.classId
+    );
 
-    const existPayment=await findAllPaymentsByStudentAndYear(paymentData.studentId,paymentData.year,paymentData.month);
+    //console.log('Existing Payment:', existPayment);
+    //console.log('Payment:', paymentData);
 
-
-    if(!existPayment){
-
-      
-    const newPayment = new Payment(paymentData);
-    const createdPayment = await newPayment.save();
-    return createdPayment;
-
+    if (!existPayment) {
+      const newPayment = new Payment(paymentData);
+      const createdPayment = await newPayment.save();
+      return createdPayment;
+    } else {
+      console.log('Payment already exists for this student in this month and year');
+      // Handle the case where payment already exists (maybe throw an error or return a specific message)
+      return null;
     }
-
   } catch (error) {
     throw error;
   }
 };
+
 
 const getPaymentById = async (paymentId:String) => {
   try {
@@ -44,7 +51,7 @@ const deletePayment = async (paymentId:String) => {
   }
 };
 
-const findAllPaymentsByStudentAndYear = async (studentId:String, year:any, month:any) => {
+const findAllPaymentsByStudentAndYear = async (studentId:String, year:String, month:String) => {
   try {
     const payments = await Payment.find({
       studentId:studentId,
@@ -61,6 +68,25 @@ const findAllPaymentsByStudentAndYear = async (studentId:String, year:any, month
   }
 };
 
+const findExistPaymentsByStudentAndYear = async (studentId:String, year:String, month:String,classId:String) => {
+  try {
+    const payments = await Payment.findOne({
+      studentId: studentId,
+      paymentYear: year,
+      paymentMonth: month,
+      classId:classId
+       // Assuming month is the specific month you want to search for
+    }) // Use .exec() to ensure the query is executed
+
+    return payments;
+  } catch (error) {
+    console.error('Error retrieving payments:', error);
+    throw error;
+  }
+};
+
+
+
 
 
 export default {
@@ -68,5 +94,7 @@ export default {
   getPaymentById,
   updatePayment,
   deletePayment,
-  findAllPaymentsByStudentAndYear
+  findAllPaymentsByStudentAndYear,
+findExistPaymentsByStudentAndYear
+
 };

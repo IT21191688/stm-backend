@@ -15,11 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const payment_model_1 = __importDefault(require("./payment.model"));
 const createPayment = (paymentData) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const existPayment = yield findAllPaymentsByStudentAndYear(paymentData.studentId, paymentData.year, paymentData.month);
+        const existPayment = yield findExistPaymentsByStudentAndYear(paymentData.studentId, paymentData.paymentYear, paymentData.paymentMonth, paymentData.classId);
+        //console.log('Existing Payment:', existPayment);
+        //console.log('Payment:', paymentData);
         if (!existPayment) {
             const newPayment = new payment_model_1.default(paymentData);
             const createdPayment = yield newPayment.save();
             return createdPayment;
+        }
+        else {
+            console.log('Payment already exists for this student in this month and year');
+            // Handle the case where payment already exists (maybe throw an error or return a specific message)
+            return null;
         }
     }
     catch (error) {
@@ -65,10 +72,27 @@ const findAllPaymentsByStudentAndYear = (studentId, year, month) => __awaiter(vo
         throw error;
     }
 });
+const findExistPaymentsByStudentAndYear = (studentId, year, month, classId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const payments = yield payment_model_1.default.findOne({
+            studentId: studentId,
+            paymentYear: year,
+            paymentMonth: month,
+            classId: classId
+            // Assuming month is the specific month you want to search for
+        }); // Use .exec() to ensure the query is executed
+        return payments;
+    }
+    catch (error) {
+        console.error('Error retrieving payments:', error);
+        throw error;
+    }
+});
 exports.default = {
     createPayment,
     getPaymentById,
     updatePayment,
     deletePayment,
-    findAllPaymentsByStudentAndYear
+    findAllPaymentsByStudentAndYear,
+    findExistPaymentsByStudentAndYear
 };
