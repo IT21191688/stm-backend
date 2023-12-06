@@ -46,7 +46,7 @@ const generatePayments = async () => {
       }
     }
 
-    console.log('Payments generated successfully for all students based on their classes.');
+   // console.log('Payments generated successfully for all students based on their classes.');
   } catch (error) {
     console.error('Error generating payments:', error);
     throw error;
@@ -99,7 +99,7 @@ const createAttendanceForAllStudents = async () => {
       }
     });
 
-    console.log('Attendance created for all students in their classes.');
+    //console.log('Attendance created for all students in their classes.');
   } catch (error) {
     console.error('Error creating attendance:', error);
   }

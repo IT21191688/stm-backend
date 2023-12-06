@@ -23,7 +23,7 @@ const createAttendance = (attendanceData) => __awaiter(void 0, void 0, void 0, f
             return newAttendance;
         }
         else {
-            console.log("Exist");
+            //console.log("Exist")
         }
     }
     catch (error) {

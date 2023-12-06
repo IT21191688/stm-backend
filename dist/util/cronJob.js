@@ -44,7 +44,7 @@ const generatePayments = () => __awaiter(void 0, void 0, void 0, function* () {
                 }
             }
         }
-        console.log('Payments generated successfully for all students based on their classes.');
+        // console.log('Payments generated successfully for all students based on their classes.');
     }
     catch (error) {
         console.error('Error generating payments:', error);
@@ -84,7 +84,7 @@ const createAttendanceForAllStudents = () => __awaiter(void 0, void 0, void 0, f
                 yield attendance_service_1.default.createAttendance(attendanceData);
             }
         }));
-        console.log('Attendance created for all students in their classes.');
+        //console.log('Attendance created for all students in their classes.');
     }
     catch (error) {
         console.error('Error creating attendance:', error);

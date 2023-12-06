@@ -19,7 +19,7 @@ const createAttendance = async (attendanceData:any) => {
         return newAttendance;
 
     }else{
-        console.log("Exist")
+        //console.log("Exist")
     }
     
   } catch (error) {

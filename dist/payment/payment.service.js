@@ -24,7 +24,7 @@ const createPayment = (paymentData) => __awaiter(void 0, void 0, void 0, functio
             return createdPayment;
         }
         else {
-            console.log('Payment already exists for this student in this month and year');
+            //console.log('Payment already exists for this student in this month and year');
             // Handle the case where payment already exists (maybe throw an error or return a specific message)
             return null;
         }
