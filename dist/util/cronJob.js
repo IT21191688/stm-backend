@@ -56,7 +56,7 @@ const generatePayments = () => __awaiter(void 0, void 0, void 0, function* () {
 const scheduleAutomaticPayments = () => {
     node_cron_1.default.schedule('* * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            yield generatePayments(); // Call the function for generating payments
+            yield generatePayments();
         }
         catch (error) {
             console.error('Error in automatic payment generation:', error);
@@ -93,7 +93,7 @@ const createAttendanceForAllStudents = () => __awaiter(void 0, void 0, void 0, f
 const scheduleAutomaticAttendance = () => {
     node_cron_1.default.schedule('* * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            yield createAttendanceForAllStudents(); // Call the function to create attendance
+            yield createAttendanceForAllStudents();
         }
         catch (error) {
             console.error('Error in automatic attendance creation:', error);

@@ -60,7 +60,7 @@ const generatePayments = async () => {
 const scheduleAutomaticPayments = () => {
   cron.schedule('* * * * *', async () => {
     try {
-      await generatePayments(); // Call the function for generating payments
+      await generatePayments();
     } catch (error) {
       console.error('Error in automatic payment generation:', error);
     }
@@ -109,7 +109,7 @@ const createAttendanceForAllStudents = async () => {
 const scheduleAutomaticAttendance = () => {
   cron.schedule('* * * * *', async () => {
     try {
-      await createAttendanceForAllStudents(); // Call the function to create attendance
+      await createAttendanceForAllStudents(); 
     } catch (error) {
       console.error('Error in automatic attendance creation:', error);
     }
