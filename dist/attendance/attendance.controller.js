@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAttendanceByStudentClassAndMonth = exports.updateAttendance = exports.createAttendance = void 0;
+exports.getClassDetailsWithAttendance = exports.getAttendanceByStudentClassAndMonth = exports.updateAttendance = exports.createAttendance = void 0;
 const attendance_service_1 = __importDefault(require("../attendance/attendance.service"));
 const response_1 = __importDefault(require("../util/response"));
 const http_status_codes_1 = require("http-status-codes");
@@ -57,3 +57,16 @@ const getAttendanceByStudentClassAndMonth = (req, res) => __awaiter(void 0, void
     }
 });
 exports.getAttendanceByStudentClassAndMonth = getAttendanceByStudentClassAndMonth;
+const getClassDetailsWithAttendance = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { studentId, month, year } = req.params;
+        const assignedClasses = yield attendance_service_1.default.fetchAssignedClasses(studentId, month, year);
+        console.log(assignedClasses);
+        return (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.OK, 'Attendance retrieved successfully', assignedClasses);
+        //console.log(assignedClasses);
+    }
+    catch (error) {
+        return (0, response_1.default)(res, false, http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, error.message, null);
+    }
+});
+exports.getClassDetailsWithAttendance = getClassDetailsWithAttendance;

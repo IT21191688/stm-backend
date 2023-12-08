@@ -14,6 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const attendance_model_1 = __importDefault(require("../attendance/attendance.model"));
+const student_model_1 = __importDefault(require("../student/student.model"));
+const class_model_1 = __importDefault(require("../class/class.model"));
 // Function to create new attendance
 const createAttendance = (attendanceData) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -66,9 +68,36 @@ const checkAttendanceExists = (studentId, classId, month, year) => __awaiter(voi
     });
     return existingAttendance;
 });
+const fetchAssignedClasses = (studentId, month, year) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const student = yield student_model_1.default.findById(studentId);
+        if (!student) {
+            throw new Error('Student not found');
+        }
+        const classIds = student.classes; // Get the array of class ids from the student
+        const classDetails = yield class_model_1.default.find({ _id: { $in: classIds } }); // Retrieve class details using the class ids
+        const attendancePromises = classDetails.map((classDetail) => __awaiter(void 0, void 0, void 0, function* () {
+            const attendance = yield attendance_model_1.default.findOne({
+                studentId: studentId,
+                classId: classDetail._id,
+                month: month,
+                year: year,
+            }); // Fetch attendance details for each class
+            return Object.assign(Object.assign({}, classDetail.toObject()), { attendance });
+        }));
+        const classesWithAttendance = yield Promise.all(attendancePromises);
+        // console.log(classesWithAttendance);
+        return classesWithAttendance;
+    }
+    catch (error) {
+        console.error('Error fetching assigned classes:', error);
+        throw new Error('Error fetching assigned classes');
+    }
+});
 exports.default = {
     createAttendance,
     updateAttendance,
     getAttendanceByStudentClassAndMonth,
-    checkAttendanceExists
+    checkAttendanceExists,
+    fetchAssignedClasses
 };

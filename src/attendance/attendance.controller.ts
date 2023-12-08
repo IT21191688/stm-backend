@@ -53,9 +53,29 @@ const getAttendanceByStudentClassAndMonth = async (req: Request, res: Response) 
 };
 
 
+const getClassDetailsWithAttendance=async(req:Request,res:Response)=>{
+
+  try {
+      const { studentId,month,year } = req.params;
+
+      const assignedClasses:any = await attendanceService.fetchAssignedClasses(studentId,month,year);
+
+      console.log(assignedClasses);
+      return CustomResponse(res, true, StatusCodes.OK, 'Attendance retrieved successfully', assignedClasses);
+      //console.log(assignedClasses);
+  }catch(error:any){
+
+
+    return CustomResponse(res, false, StatusCodes.INTERNAL_SERVER_ERROR, error.message, null);
+
+  }
+}
+
+
 
 export {
   createAttendance,
   updateAttendance,
-  getAttendanceByStudentClassAndMonth
+  getAttendanceByStudentClassAndMonth,
+  getClassDetailsWithAttendance
 };

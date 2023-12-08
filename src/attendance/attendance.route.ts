@@ -1,7 +1,7 @@
 // attendance.routes.js
 
 import express from 'express';
-import { createAttendance,updateAttendance,getAttendanceByStudentClassAndMonth } from './attendance.controller'; 
+import { createAttendance,updateAttendance,getAttendanceByStudentClassAndMonth,getClassDetailsWithAttendance } from './attendance.controller'; 
 import authMiddleware from '../auth/auth.middleware';
 import constants from '../constant';
 
@@ -23,6 +23,13 @@ attendanceRouter.get(
    '/getAttendance/:studentId/:classId/:month/:year',
   authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
   getAttendanceByStudentClassAndMonth
+);
+
+
+attendanceRouter.get(
+   '/getAttendancewithAssignClasses/:studentId/:month/:year',
+  authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
+  getClassDetailsWithAttendance
 );
 
 

@@ -12,4 +12,5 @@ const attendanceRouter = (0, express_1.Router)();
 attendanceRouter.post('/createAttendance', auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), attendance_controller_1.createAttendance);
 attendanceRouter.put('/updateAttendance/:id', auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), attendance_controller_1.updateAttendance);
 attendanceRouter.get('/getAttendance/:studentId/:classId/:month/:year', auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), attendance_controller_1.getAttendanceByStudentClassAndMonth);
+attendanceRouter.get('/getAttendancewithAssignClasses/:studentId/:month/:year', auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), attendance_controller_1.getClassDetailsWithAttendance);
 exports.default = attendanceRouter;
