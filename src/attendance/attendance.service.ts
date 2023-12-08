@@ -46,7 +46,7 @@ const addDateToAttendance = async (id: string, newDate: any) => {
 
     return updatedAttendance;
   } catch (error) {
-    throw new Error('Could not update attendance');
+    throw new Error('Could not update attendance'+error);
   }
 };
 

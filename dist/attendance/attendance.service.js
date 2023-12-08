@@ -42,7 +42,7 @@ const addDateToAttendance = (id, newDate) => __awaiter(void 0, void 0, void 0, f
         return updatedAttendance;
     }
     catch (error) {
-        throw new Error('Could not update attendance');
+        throw new Error('Could not update attendance' + error);
     }
 });
 const getAttendanceByStudentClassAndMonth = (studentId, classId, month, year) => __awaiter(void 0, void 0, void 0, function* () {

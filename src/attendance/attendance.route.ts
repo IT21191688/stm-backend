@@ -14,7 +14,7 @@ authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
  createAttendance);
 
 
-attendanceRouter.put('/updateAttendance/:id',   
+attendanceRouter.patch('/updateAttendance/:id',   
 authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
 updateAttendance);
 
