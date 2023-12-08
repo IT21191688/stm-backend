@@ -97,7 +97,7 @@ const fetchAssignedClasses = (studentId, month, year) => __awaiter(void 0, void 
 });
 exports.default = {
     createAttendance,
-    updateAttendance,
+    addDateToAttendance,
     getAttendanceByStudentClassAndMonth,
     checkAttendanceExists,
     fetchAssignedClasses
