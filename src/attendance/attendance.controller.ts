@@ -30,13 +30,12 @@ const createAttendance = async (req: Request, res: Response) => {
 
 
 
-
 const updateAttendance = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const attendanceData = req.body;
-    const updatedAttendance = await attendanceService.updateAttendance(id, attendanceData);
-    return CustomResponse(res, true, StatusCodes.OK, 'Attendance updated successfully', updatedAttendance);
+    const { newDate } = req.body; // Assuming 'date' is the array you want to update
+    const updatedAttendance = await attendanceService.addDateToAttendance(id, newDate);
+    return CustomResponse(res, true, StatusCodes.OK, 'Attendance date updated successfully', updatedAttendance);
   } catch (error: any) {
     return CustomResponse(res, false, StatusCodes.INTERNAL_SERVER_ERROR, error.message, null);
   }

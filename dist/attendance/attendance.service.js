@@ -32,9 +32,10 @@ const createAttendance = (attendanceData) => __awaiter(void 0, void 0, void 0, f
         throw new Error('Could not create attendance');
     }
 });
-const updateAttendance = (id, attendanceData) => __awaiter(void 0, void 0, void 0, function* () {
+const addDateToAttendance = (id, newDate) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const updatedAttendance = yield attendance_model_1.default.findByIdAndUpdate(id, attendanceData, { new: true });
+        const updatedAttendance = yield attendance_model_1.default.findByIdAndUpdate(id, { $push: { days: newDate } }, // Add 'newDate' to the 'date' array
+        { new: true });
         if (!updatedAttendance) {
             throw new Error('Attendance not found');
         }

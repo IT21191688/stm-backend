@@ -37,9 +37,9 @@ exports.createAttendance = createAttendance;
 const updateAttendance = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const attendanceData = req.body;
-        const updatedAttendance = yield attendance_service_1.default.updateAttendance(id, attendanceData);
-        return (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.OK, 'Attendance updated successfully', updatedAttendance);
+        const { newDate } = req.body; // Assuming 'date' is the array you want to update
+        const updatedAttendance = yield attendance_service_1.default.addDateToAttendance(id, newDate);
+        return (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.OK, 'Attendance date updated successfully', updatedAttendance);
     }
     catch (error) {
         return (0, response_1.default)(res, false, http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, error.message, null);

@@ -32,18 +32,23 @@ const createAttendance = async (attendanceData:any) => {
 
 
 
-const updateAttendance = async (id:String, attendanceData:any) => {
+const addDateToAttendance = async (id: string, newDate: any) => {
   try {
-    const updatedAttendance = await Attendance.findByIdAndUpdate(id, attendanceData, { new: true });
+    const updatedAttendance = await Attendance.findByIdAndUpdate(
+      id,
+      { $push: { days: newDate } }, // Add 'newDate' to the 'date' array
+      { new: true }
+    );
+
     if (!updatedAttendance) {
       throw new Error('Attendance not found');
     }
+
     return updatedAttendance;
   } catch (error) {
     throw new Error('Could not update attendance');
   }
 };
-
 
 const getAttendanceByStudentClassAndMonth = async (studentId:String, classId:String, month:String, year:String) => {
   try {
@@ -109,7 +114,7 @@ const fetchAssignedClasses = async (studentId:String, month:any, year:any) => {
 
 export default{
     createAttendance,
-    updateAttendance,
+    addDateToAttendance,
     getAttendanceByStudentClassAndMonth,
     checkAttendanceExists,
     fetchAssignedClasses
