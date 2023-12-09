@@ -12,6 +12,6 @@ const StudentRouter = (0, express_1.Router)();
 StudentRouter.post("/sturegister", auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), student_controller_1.CreateStudent);
 StudentRouter.get("/getStudentDetails/:studentId", auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), student_controller_1.GetStudentDetails);
 StudentRouter.patch("/update/:studentId", auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), student_controller_1.UpdateStudentDetails);
-StudentRouter.patch("/getAllStudentDetails", auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), student_controller_1.GetAllStudentDetails);
+StudentRouter.get("/getAllStudentDetails", auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), student_controller_1.GetAllStudentDetails);
 StudentRouter.patch("/delete/:studentId", auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), student_controller_1.DeleteStudentDeteils);
 exports.default = StudentRouter;

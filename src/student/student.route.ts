@@ -29,7 +29,7 @@ StudentRouter.patch(
   UpdateStudentDetails
 );
 
-StudentRouter.patch(
+StudentRouter.get(
   "/getAllStudentDetails",
   authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
   GetAllStudentDetails
