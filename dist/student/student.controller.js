@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeleteStudentDeteils = exports.UpdateStudentDetails = exports.GetStudentDetails = exports.CreateStudent = void 0;
+exports.GetAllStudentDetails = exports.DeleteStudentDeteils = exports.UpdateStudentDetails = exports.GetStudentDetails = exports.CreateStudent = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const response_1 = __importDefault(require("../util/response"));
 const student_service_1 = __importDefault(require("../student/student.service"));
@@ -124,3 +124,13 @@ const DeleteStudentDeteils = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.DeleteStudentDeteils = DeleteStudentDeteils;
+const GetAllStudentDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const allStudents = yield student_service_1.default.getAllStudents();
+        (0, response_1.default)(res, true, http_status_codes_1.StatusCodes.OK, 'Classes retrieved successfully!', allStudents);
+    }
+    catch (error) {
+        (0, response_1.default)(res, false, http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, error.message, null);
+    }
+});
+exports.GetAllStudentDetails = GetAllStudentDetails;

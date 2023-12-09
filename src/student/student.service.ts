@@ -58,10 +58,19 @@ const uploadQRImageToCloudinary = async (studentId: any, qrImageURL: any) => {
   }
 };
 
+const getAllStudents = async () => {
+  try {
+    return await Student.find({});
+  } catch (error) {
+    throw error;
+  }
+};
+
 export default {
   findByEmail,
   save,
   findById,
   generateQRCode,
   uploadQRImageToCloudinary,
+  getAllStudents
 };

@@ -172,9 +172,27 @@ const DeleteStudentDeteils = async (req: Request, res: Response) => {
 };
 
 
+const GetAllStudentDetails = async (req: Request, res: Response) => {
+  try {
+
+
+    const allStudents = await studentService.getAllStudents();
+
+
+    CustomResponse(res, true, StatusCodes.OK, 'Classes retrieved successfully!', allStudents);
+
+
+  } catch (error: any) {
+
+
+    CustomResponse(res, false, StatusCodes.INTERNAL_SERVER_ERROR, error.message, null);
+  }
+};
 
 
 
 
 
-export { CreateStudent,GetStudentDetails,UpdateStudentDetails,DeleteStudentDeteils };
+
+
+export { CreateStudent,GetStudentDetails,UpdateStudentDetails,DeleteStudentDeteils,GetAllStudentDetails };

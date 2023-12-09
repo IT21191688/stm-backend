@@ -65,10 +65,19 @@ const uploadQRImageToCloudinary = (studentId, qrImageURL) => __awaiter(void 0, v
         throw error;
     }
 });
+const getAllStudents = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        return yield student_model_1.default.find({});
+    }
+    catch (error) {
+        throw error;
+    }
+});
 exports.default = {
     findByEmail,
     save,
     findById,
     generateQRCode,
     uploadQRImageToCloudinary,
+    getAllStudents
 };
