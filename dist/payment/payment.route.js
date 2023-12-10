@@ -14,4 +14,5 @@ PaymentRouter.get('/getPaymentById/:paymentId', auth_middleware_1.default.author
 PaymentRouter.patch('/updatePayment/:paymentId', auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), payment_controller_1.updatePayment);
 PaymentRouter.patch('/deletePayment/:paymentId', auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), payment_controller_1.deletePayment);
 PaymentRouter.get('/getPaymentsByStudentAndYear/:studentId', auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), payment_controller_1.getAllPaymentsByStudentAndYear);
+PaymentRouter.get('/getPaymentUsingClass/:studentId/:classId', auth_middleware_1.default.authorize([constant_1.default.USER.ROLES.ADMIN]), payment_controller_1.getPaymentUsingClass);
 exports.default = PaymentRouter;

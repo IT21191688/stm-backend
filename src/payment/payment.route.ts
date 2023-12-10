@@ -6,7 +6,8 @@ import {
   getPaymentById,
   updatePayment,
   deletePayment,
-  getAllPaymentsByStudentAndYear
+  getAllPaymentsByStudentAndYear,
+  getPaymentUsingClass
 } from './payment.controller';
 
 const PaymentRouter = Router();
@@ -40,6 +41,12 @@ PaymentRouter.get(
   '/getPaymentsByStudentAndYear/:studentId',
   authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
   getAllPaymentsByStudentAndYear
+);
+
+PaymentRouter.get(
+  '/getPaymentUsingClass/:studentId/:classId',
+  authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
+  getPaymentUsingClass
 );
 
 export default PaymentRouter;

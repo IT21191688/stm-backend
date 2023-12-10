@@ -78,11 +78,46 @@ if (typeof filter === 'string') {
   }
 };
 
+const getPaymentUsingClass = async (req: Request, res: Response) => {
+  try {
+    const { studentId,classId } = req.params;
+    //const { year, month } = req.query; // Extract month from query parameters
+
+    const { filter } = req.query;
+
+if (typeof filter === 'string') {
+  try {
+    const { year, month } = JSON.parse(filter);
+    // Now you have `year` and `month` as separate variables containing the values from the JSON object
+
+      console.log(year,month);
+
+    const payments = await paymentService.findExistPaymentsByStudentAndYear(studentId, year, month,classId);
+
+    //console.log(payments)
+
+    CustomResponse(res, true, StatusCodes.OK, 'Payments retrieved successfully!', payments);
+  } catch (error) {
+    console.error('Error parsing JSON:', error);
+    // Handle JSON parsing error
+  }
+} else {
+  // Handle cases where filter is not a string or undefined
+
+  console.log("type not String")
+}
+  
+  } catch (error: any) {
+    CustomResponse(res, false, StatusCodes.INTERNAL_SERVER_ERROR, error.message, null);
+  }
+};
+
 
 export{
   createPayment,
   getPaymentById,
   updatePayment,
   deletePayment,
-  getAllPaymentsByStudentAndYear
+  getAllPaymentsByStudentAndYear,
+  getPaymentUsingClass
 };
